@@ -1,3 +1,7 @@
+<?php
+require_once("./Includes/auth.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,13 +13,6 @@
       rel="stylesheet"
     />
     <link href="./assets/css/index.css" rel="stylesheet" />
-    <!--
-
-TemplateMo 596 Electric Xtra
-
-https://templatemo.com/tm-596-electric-xtra
-
--->
   </head>
   <body>
     <!-- Animated Grid Background -->
@@ -87,17 +84,35 @@ https://templatemo.com/tm-596-electric-xtra
       </div>
     </nav>
 
+    <!-- Success Massege -->
+    <div id="notification" class="notification">
+      <div class="notification__body">
+        <h2>Success</h2>
+        <p id="status-msg-success"></p>
+      </div>
+      <button id="closeBtn" class="notification__close">✕</button>
+    </div>
+
+    <!-- Error Massege -->
+    <div id="notification-error" class="notification-error">
+      <div class="notification__body">
+        <h2>Failed</h2>
+        <p id="status-msg-error"></p>
+      </div>
+      <button id="closeErrorBtn" class="notification__close">✕</button>
+    </div>
+
     <!-- Login Popup -->
     <div class="login">
       <div class="text-feild">
         <h2 class="log-h1">LOGIN</h2>
         <div class="input-field">
-          <form action="login.php" method="POST">
+          <form action="./login.php" method="POST">
             <label style="margin-bottom: 50px">Email:</label><br />
             <input
               type="email"
               name="email"
-              id="email"
+              id="login-email"
               class="lo-input"
               placeholder="Enter Email"
             /><br />
@@ -105,15 +120,17 @@ https://templatemo.com/tm-596-electric-xtra
             <input
               type="password"
               name="password"
-              id="password"
+              id="login-password"
               class="lo-input"
               placeholder="Enter Password"
             /><br />
-            <input type="checkbox" name="remember" id="remember" />
+            <p id="error-msg" style="font-size: 15px"></p>
+            <input type="checkbox" name="remember_me" id="remember" />
             <label>Keep Me In Login</label>
             <button
               class="cta-button cta-primary"
               style="display: block; margin-top: 20px"
+              id="submit-login-btn"
             >
               Log In
             </button>
@@ -138,39 +155,45 @@ https://templatemo.com/tm-596-electric-xtra
           <form action="signup.php" method="POST">
             <label>User Name:</label><br />
             <input
-              type="name"
-              name="name"
-              id="name"
+              type="text"
+              name="uname"
+              id="signup-uname"
               class="lo-input"
               placeholder="Enter User Name"
+              required
             /><br />
             <label>Email:</label><br />
             <input
               type="email"
               name="email"
-              id="email"
+              id="signup-email"
               class="lo-input"
               placeholder="Enter Email"
+              required
             /><br />
             <label>Password:</label><br />
             <input
               type="password"
               name="password"
-              id="password"
+              id="signup-password"
               class="lo-input"
               placeholder="Enter Password"
+              required
             /><br />
             <label>Conform Password:</label><br />
             <input
               type="password"
               name="con-password"
-              id="con-password"
+              id="signup-con-password"
               class="lo-input"
               placeholder="Enter Password Again"
+              required
             /><br />
+            <p id="signup-error-msg"></p>
             <button
               class="cta-button cta-primary"
               style="display: block; margin-top: 20px"
+              id="signup-btn-popup"
             >
               Sign Up
             </button>
@@ -289,6 +312,71 @@ https://templatemo.com/tm-596-electric-xtra
         </p>
       </div>
     </footer>
+    <script src="./assets/js/notification.js"></script>
     <script src="./assets/js/index.js"></script>
+    <script>
+      window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("status") === "success") {
+          const popup = document.getElementById("notification");
+          const succMsg=document.getElementById("status-msg-success");
+          succMsg.innerHTML = params.get("successMsg");
+          popup.classList.add("show");
+          setTimeout(() => {
+            popup.classList.remove("show");
+          }, 3000);
+          const newUrl = window.location.pathname;
+          window.history.replaceState({}, document.title, newUrl);
+        } else if (params.get("status") === "error") {
+          const errorMsg=document.getElementById("status-msg-error");
+          const popup = document.getElementById("notification-error");
+          errorMsg.innerHTML = params.get("errorMsg");
+          popup.classList.add("show");
+          setTimeout(() => {
+            popup.classList.remove("show");
+          }, 3000);
+          const newUrl = window.location.pathname;
+          window.history.replaceState({}, document.title, newUrl);
+        }
+      };
+    </script>
+    <script>
+      const loginBtn = document.getElementById("submit-login-btn");
+      const signupBtn = document.getElementById("signup-btn-popup");
+      console.log(signupBtn);
+      loginBtn.addEventListener("click", function (event) {
+        const emailLogin = document.getElementById("login-email").value.trim();
+        const passLogin = document
+          .getElementById("login-password")
+          .value.trim();
+        if (!emailLogin || !passLogin) {
+          document.getElementById("error-msg").innerHTML =
+            "<span style='color:red'>*</span>All fields must be filled before continuing.";
+          event.preventDefault();
+        }
+      });
+
+      signupBtn.addEventListener("click", function (event) {
+        const unameSignup = document
+          .getElementById("signup-uname")
+          .value.trim();
+        const emailSignup = document
+          .getElementById("signup-email")
+          .value.trim();
+        const passSignup = document
+          .getElementById("signup-password")
+          .value.trim();
+        const conPassSignup = document
+          .getElementById("signup-con-password")
+          .value.trim();
+
+        if (!unameSignup || !emailSignup || !passSignup || !conPassSignup) {
+          document.getElementById("signup-error-msg").innerHTML =
+            "<span style='color:red'>*</span>All fields must be filled before continuing.";
+          event.preventDefault();
+        }
+      });
+    </script>
   </body>
 </html>
+

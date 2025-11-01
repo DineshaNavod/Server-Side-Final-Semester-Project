@@ -1,0 +1,37 @@
+.notification,
+.notification-error {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: #1b945b;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  display: block;
+  min-width: 250px;
+  z-index: 9999;
+
+  opacity: 0;
+  transform: translateY(-20px) scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.notification-error {
+  background: #e21a1a;
+}
+
+.notification.show,
+.notification-error.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.notification__close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  float: right;
+}
