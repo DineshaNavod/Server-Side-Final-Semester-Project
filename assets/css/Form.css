@@ -1,0 +1,59 @@
+/* ---------- FORM ELEMENTS ---------- */
+label {
+  display: block;
+  font-weight: 600;
+  color: #eee;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+input[type="text"],
+input[type="date"],
+input[type="email"],
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+}
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #010508;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+}
+input,
+textarea {
+  outline: none;
+  box-shadow: 0 0 8px rgba(111, 66, 193, 0.6);
+}
+
+textarea {
+  resize: none;
+}
+.lostdash_btn {
+  width: 100%;
+  background: linear-gradient(135deg, #007bff, #6f42c1);
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 13px;
+  font-size: 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+button:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(135deg, #021121, #5a31a3);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
