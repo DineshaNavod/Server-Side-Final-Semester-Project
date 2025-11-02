@@ -13,6 +13,7 @@ require_once("./Includes/auth.php");
       rel="stylesheet"
     />
     <link href="./assets/css/index.css" rel="stylesheet" />
+    <link href="./assets/css/notification.css" rel="stylesheet" />
   </head>
   <body>
     <!-- Animated Grid Background -->
@@ -107,7 +108,7 @@ require_once("./Includes/auth.php");
       <div class="text-feild">
         <h2 class="log-h1">LOGIN</h2>
         <div class="input-field">
-          <form action="./login.php" method="POST">
+          <form action="./phpScripts/login.php" method="POST">
             <label style="margin-bottom: 50px">Email:</label><br />
             <input
               type="email"
@@ -152,7 +153,7 @@ require_once("./Includes/auth.php");
       <div class="text-feild">
         <h2 class="log-h1">SIGN UP</h2>
         <div class="input-field-signup">
-          <form action="signup.php" method="POST">
+          <form action="./phpScripts/signup.php" method="POST">
             <label>User Name:</label><br />
             <input
               type="text"

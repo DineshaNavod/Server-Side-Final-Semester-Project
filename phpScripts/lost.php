@@ -2,9 +2,7 @@
 session_start();
 require '../Includes/db.php'; 
 
-$_SESSION['user_id'] = 1;
 
-$success = false;
 $error = "";
 
 if (isset($_POST['submit'])) {
@@ -25,40 +23,30 @@ if (isset($_POST['submit'])) {
         $upload_path = "../uploads/" . $image_name;
 
         if (!move_uploaded_file($tmp_name, $upload_path)) {
-            $error = "❌ Image upload failed!";
-            $image_name = "";
+            $error = "Invalid Image Upload";
         }
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "❌ Invalid Email Address!";
-    }
-
-    if (!preg_match('/^\+?[0-9]{10,15}$/', $phone)) {
-        $error = "❌ Invalid Phone Number!";
+        $error = "Invalid Email Address";
+    } elseif (!preg_match('/^\+?[0-9]{10,15}$/', $phone)) {
+        $error = "Invalid Phone Number";
     }
 
     if (empty($error)) {
         $sql = "INSERT INTO Lost (user_id, owner_name, phone, email, item_name, discription, locat, date_lost, img)
                 VALUES ('$user_id', '$owner_name', '$phone', '$email', '$item_name', '$description', '$location', '$date_lost', '$image_name')";
-
         if (mysqli_query($conn, $sql)) {
-            $success = true;
+            header("Location: ../dashboard.php?status=success&type=lost");
         } else {
-            $error = "❌ Error: " . mysqli_error($conn);
+            header("Location: ../dashboard.php?status=error&message=" . urlencode("Database Error"));
         }
+    } else {
+        header("Location: ../dashboard.php?status=error&message=" . urlencode($error));
     }
 
-    if ($success) {
-        header("Location: ../dashboard.php?status=success&type=lost");
-        exit;
-    } elseif (!empty($error)) {
-        echo "<p style='color:red;'>$error</p>";
-    }
+    exit();
 }
-
 
 mysqli_close($conn);
 ?>
-
-

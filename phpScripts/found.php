@@ -2,8 +2,10 @@
 session_start();
 require '../Includes/db.php'; 
 
-// Dummy login for testing
-$_SESSION['user_id'] = 1;
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../index.php?status=error&message=Please+login+first");
+    exit();
+}
 
 $success = false;
 $error = "";
@@ -33,9 +35,7 @@ if (isset($_POST['submit'])) {
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "❌ Invalid Email Address!";
-    }
-
-    if (!preg_match('/^\+?[0-9]{10,15}$/', $phone)) {
+    } elseif (!preg_match('/^\+?[0-9]{10,15}$/', $phone)) {
         $error = "❌ Invalid Phone Number!";
     }
 
@@ -46,15 +46,24 @@ if (isset($_POST['submit'])) {
         if (mysqli_query($conn, $sql)) {
             $success = true;
         } else {
-            $error = "❌ Error: " . mysqli_error($conn);
+            $error = "❌ Database Error: " . mysqli_error($conn);
         }
     }
 
-    if ($success) {
-        header("Location: ../dashboard.php?status=success&type=found");
-        exit;
-    } elseif (!empty($error)) {
-        echo "<p style='color:red;'>$error</p>";
+    if (!empty($error)) {
+        echo "<script>
+                window.addEventListener('DOMContentLoaded', () => {
+                    alert('" . addslashes($error) . "');
+                    window.location.href = '../dashboard.php';
+                });
+              </script>";
+    } elseif ($success) {
+        echo "<script>
+                window.addEventListener('DOMContentLoaded', () => {
+                    alert('✅ Found item reported successfully!');
+                    window.location.href = '../dashboard.php';
+                });
+              </script>";
     }
 }
 
